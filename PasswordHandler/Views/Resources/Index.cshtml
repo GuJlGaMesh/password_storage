@@ -1,0 +1,62 @@
+﻿@model IEnumerable<PasswordHandler.Models.Resource>
+
+@{
+    ViewData["Title"] = "Index";
+}
+@{
+    PasswordHandler.Models.Store m = new PasswordHandler.Models.Store();
+}
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Resource)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Login)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Synopsis)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Password)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Resource)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Login)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Synopsis)
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<form asp-action="Index">
+    <label asp-for="@m.MasterKey">Input master key to show passwords crypted by it:</label>
+    <input asp-for="@m.MasterKey" />
+    <input type="submit" value="Decrypt" class="btn btn-primary" />
+</form>
+<div>
+    <a asp-action="Help">Get help.</a>
+</div>

@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewData["Title"] = "Help";
+}
+
+<h1>Help</h1>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<h2>Generation</h2>
+<p>
+    <h3>Rules:</h3>
+    <ul>
+        <li><h4>Lower</h4>
+<p>- produce symbols in that range: "qwertyuiopasdfghjklzxcvbnm"</p></li>
+<li>
+    <h4>Upper</h4>
+    <p>- produce symbols in that range: "QWERTYUIOPASDFGHJKLZXCVBNM"</p>
+</li>
+<li>
+    <h4>Special</h4>
+    <p>- produce symbols in that range: ""<>,.\\!@@#$%^&*()_+=-/|""</p>
+</li>
+<li>
+    <h4>Digit</h4>
+    <p>- produce symbols in that range: "0123456789"</p>
+</li>
+<li>
+    <h4>Length</h4>
+    <p>- special type of rules that set up length of the password. Why it produce symbols in range: "qwertyuiopasdfghjklzxcvbnm" you could read in features below.</p>
+</li>
+    </ul>
+
+<h3>Let`s talk about "features" of generation.</h3>
+<ul>
+    <li>Setting password`s length as 0(use default value) and generation set off initiate generation password with all 5 rules included.</li>
+    <li>Leave generation checkbox as default and password`s field empty and app will be generate password with all rules.</li>
+    <li>
+        Rule that set length of the password inherit from lower char rule and when you are use generation then probably in the
+        all cases you will get password with lower chars. Just accept it.
+    </li>
+    <li>Using generation activate length rule anyway.</li>
+    <li>Ignoring of activating rules when generation has activated activate all rules as default case.</li>
+    <li>Generation and check using the same password length, if it specified. In other case it use delault length that equal 8. </li>
+</ul>
+<h2>Estimation password quality</h2>
+<p>
+    It has rules with same names as rules above, but they works in the other way. They check occurence of the symbols in the password.
+    Which types of the symbols it checks you can understand from it`s name. List of it`s names below:
+</p>
+<ul>
+    <li><h4>Upper</h4></li>
+    <li><h4>Lower</h4></li>
+    <li><h4>Digit</h4></li>
+    <li><h4>Special</h4></li>
+    <li><h4>Length</h4></li>
+</ul>
+<p>
+    <h3>Few words about estimate</h3> <strong>- if you get estimate something like "1" then you will be sure that password is good.</strong>
+    <h3>Let`s talk about "features" of the password estimating.</h3>
+    <ul>
+        <li>Generation and check using the same password length, if it specified. In other case it use delault length that equal 8. </li>
+    </ul>
+</p>
+</p>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+

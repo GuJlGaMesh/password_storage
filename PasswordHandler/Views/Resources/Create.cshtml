@@ -1,0 +1,87 @@
+﻿@model PasswordHandler.Models.Store
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@{ 
+    PasswordHandler.Models.Store gen = new PasswordHandler.Models.Store();
+}
+<h1>Create</h1>
+
+<h4>Resource</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div class="text-danger"></div>
+            <div class="form-group">
+                <label>Use generation:</label>
+                <input asp-for="Generation" type="checkbox" class="form-control" />
+                <label>Estimate password:</label>
+                <input checked asp-for="CheckingPassword" type="checkbox" class="form-control" />
+                <label class="control-label">Check password with: 
+                </label>
+                <label>Digits</label>
+                <input checked asp-for="Digits" type="checkbox" class="form-control" />
+                <label>Upper chars</label>
+                <input checked asp-for="UpperChar" type="checkbox" class="form-control" />
+                <label>Lower chars</label>
+                <input checked asp-for="LowerChar" type="checkbox" class="form-control" />
+                <label> Special chars</label>
+                <input checked asp-for="SpecialChar" type="checkbox" class="form-control" />
+                <label>Setting a own value of password`s length:</label>
+                <input checked asp-for="Length" type="checkbox" class="form-control" />
+                <input asp-for="LengthValue" value="0" type="number" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Generate password with: 
+                </label>
+                <label>Digits</label>
+                <input asp-for="@gen.Digits" type="checkbox" class="form-control" />
+                <label>Upper chars</label>
+                <input asp-for="@gen.UpperChar" type="checkbox" class="form-control" />
+                <label>Lower chars</label>
+                <input asp-for="@gen.LowerChar" type="checkbox" class="form-control" />
+                <label> Special chars</label>
+                <input asp-for="@gen.SpecialChar" type="checkbox" class="form-control" />
+                <input asp-for="@gen.Length" type="checkbox" class="form-control" />
+
+            </div>
+            <div class="form-group">
+                <label asp-for="Resource" class="control-label"></label>
+                <input required asp-for="Resource" class="form-control" />
+                <span asp-validation-for="Resource" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input type ="password" asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Login" class="control-label"></label>
+                <input required asp-for="Login" class="form-control" />
+                <span asp-validation-for="Login" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Synopsis" class="control-label"></label>
+                <input asp-for="Synopsis" class="form-control" />
+                <span asp-validation-for="Synopsis" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MasterKey" class="control-label"></label>
+                <input type="password" required asp-for="MasterKey" class="form-control" />
+                <span asp-validation-for="MasterKey" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
