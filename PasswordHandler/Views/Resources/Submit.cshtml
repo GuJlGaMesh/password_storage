@@ -9,10 +9,13 @@
 
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-auto">
         <form asp-action="Index">
-            <div><h2>@Html.DisplayFor(m => m.Estimate) - estimate of your password. </h2></div>
-            <div><h2>@Html.DisplayFor(m => m.Password) - your new password. </h2></div>
+            @if (!string.IsNullOrEmpty(Model.Estimate))
+            {
+                <div><h2>@Html.DisplayFor(m => m.Estimate) - estimate of your password. </h2></div>
+            }
+            <div><h2>@Html.DisplayFor(m => m.Password) - is your new password. </h2></div>
             <div class="form-group">
                 <input type="submit" value="I'm sure" class="btn btn-primary" />
             </div>

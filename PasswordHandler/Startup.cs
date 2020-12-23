@@ -11,6 +11,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PasswordHandler.Data;
 using Microsoft.VisualStudio.Web.BrowserLink;
+using Password_Storage;
+using Password_Storage.Interfaces;
+using Password_Storage.RuleDescriptors;
+using AutoMapper;
+using PasswordHandler.Utils;
+using PasswordStorage;
+
 namespace PasswordHandler
 {
     public class Startup
@@ -29,6 +36,14 @@ namespace PasswordHandler
             services.AddRazorPages().AddRazorRuntimeCompilation();
             services.AddDbContext<PasswordContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("PasswordContext")));
+            services.AddTransient<IEncrypt, Crypto>();
+            services.AddSingleton<IRuleDescriptor, UpperCharDescriptor>();
+            services.AddSingleton<IRuleDescriptor, LowerCharDescriptor>();
+            services.AddSingleton<IRuleDescriptor, DigitCharDescriptor>();
+            services.AddSingleton<IRuleDescriptor, SpecialCharDescriptor>();
+            services.AddSingleton<IRuleDescriptor, LengthDescriptor>();
+            services.AddSingleton<RuleContainer>();
+            services.AddAutoMapper(config => config.AddProfile<MappingProfile>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,7 +71,7 @@ namespace PasswordHandler
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Resources}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

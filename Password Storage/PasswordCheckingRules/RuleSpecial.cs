@@ -4,12 +4,12 @@ using System.Text;
 using System.Linq;
 namespace Password_Storage
 {
-    public class RuleSpecialSymbols : IRule
+    public class RuleSpecial : IRule
     {
         private double _proportion;
 
-        public RuleSpecialSymbols() => _proportion = 4;
-        public RuleSpecialSymbols(double proportion) => _proportion = proportion;
+        public RuleSpecial() => _proportion = 4;
+        public RuleSpecial(double proportion) => _proportion = proportion;
         public double Check(string password)
         {
             int sum = 0;

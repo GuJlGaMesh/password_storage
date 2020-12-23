@@ -10,7 +10,7 @@ using PasswordHandler.Models;
 using Password_Storage;
 using PasswordStorage;
 using AutoMapper;
-using Password_Storage.Interfaces;
+
 using PasswordHandler.Utils;
 
 namespace PasswordHandler.Controllers
@@ -18,13 +18,26 @@ namespace PasswordHandler.Controllers
     public class ResourcesController : Controller
     {
         private readonly PasswordContext _context;
-        public ResourcesController(PasswordContext context)
+        private readonly IEncrypt _encrypt;
+        private readonly RuleContainer _ruleContainer;
+        private readonly IMapper _mapper;
+        private readonly PasswordGenerator _passwordGenerator;
+        private Resource _record { get; set; }
+        public ResourcesController(
+            PasswordContext context,
+            IEncrypt encrypt,
+            RuleContainer ruleContainer,
+            IMapper mapper)
         {
             _context = context;
+            _encrypt = encrypt;
+            _ruleContainer = ruleContainer;
+            _mapper = mapper;
         }
 
+
         // GET: Resources
-        
+
         public async Task<IActionResult> Index()
         {
             return View(await _context.Records.ToListAsync());
@@ -57,44 +70,63 @@ namespace PasswordHandler.Controllers
             return View();
         }
 
-        public IActionResult Submit(Store model)
+        public IActionResult Submit(Store store)
         {
-            return View(model);
+            int _store;
+            var record = _mapper.Map<Store, Resource>(store);
+            record.Login = _encrypt.Crypt(record.Login, store.MasterKey);
+            record.Password = _encrypt.Crypt(record.Password, store.MasterKey);
+            _context.Add(record);
+            _context.SaveChanges();
+            return View(store);
         }
         public IActionResult Help()
         {
-            return View();
+            return View(_ruleContainer);
+        }
+        public IActionResult GenerationEmpty(Store store)
+        {
+            store.Rules = _ruleContainer.GetNames().Select(n => new RuleActivity { Name = n, Enabled = false }).ToList();
+
+            return View("Generation", store);
         }
 
         [HttpPost]
-        public IActionResult Create([FromForm] Store cheks, [FromForm] Store gen)
+        public IActionResult Generation(Store store)
         {
-            if (cheks.LengthValue != 0 && cheks.Generation) gen.Length = true;
-            var checkRules = new List<IRule>();
-            var genRules = new List<IGenerator>();
-            if (cheks.CheckingPassword)
+            var genRules = store.Rules.Where(e => e.Enabled == true).Select(r => _ruleContainer.GetByName(r.Name).GetGenerator()).ToList();
+            store.Password = new PasswordGenerator(genRules).GetPassword();
+            return RedirectToAction("CheckingEmpty", store);
+        }
+        [HttpPost]
+        public IActionResult Checking(Store store)
+        {
+            if (store.CheckingPassword)
             {
-                checkRules = (new RuleListcs<IRule>
-                 (new List<IRule>()
-                 {
-                    new RuleSpecialSymbols(), new RuleLower(),
-                    new RuleUpper(), new RuleDigit(),
-                    new RuleLength(cheks.LengthValue)
-                 }
-                ))
-                .GetListWithRules(cheks);
+                var checkRules = store.Rules.Where(e => e.Enabled == true).Select(r => _ruleContainer.GetByName(r.Name).CreateRule()).ToList();
+                store.Estimate = new PasswordEstimator(checkRules).EstimatePassword(store.Password).ToString();
             }
-            if (cheks.Generation || string.IsNullOrEmpty(cheks.Password))
+            return RedirectToAction("Submit", store);
+        }
+        public IActionResult CheckingEmpty(Store store)
+        {
+            store.Rules = _ruleContainer.GetNames().Select(n => new RuleActivity { Name = n, Enabled = false }).ToList();
+            return View("Checking", store);
+        }
+
+        [HttpPost]
+        public IActionResult Create([FromForm] Store store)
+        {
+
+            if (store.Generation || string.IsNullOrEmpty(store.Password))
             {
-                var rules = new List<IGenerator>()
-                    {
-                        new SpecialChar(), new LowerChar(), new UpperChar(), new DigitChar(), new Length(cheks.LengthValue)
-                    };
-                if (cheks.LengthValue == 0)
-                    genRules = new RuleListcs<IGenerator>(rules).GetListWithRules();
-                else
-                    genRules = new RuleListcs<IGenerator>(rules).GetListWithRules(gen);
+               return RedirectToAction("GenerationEmpty", store);
             }
+            return RedirectToAction("CheckingEmpty", store);
+            
+
+
+            /*
             if (ModelState.IsValid)
             {
                 var config = new MapperConfiguration(cfg => cfg.CreateMap<Store, Resource>());
@@ -117,7 +149,8 @@ namespace PasswordHandler.Controllers
                 cheks.Password = c.Decrypt(record.Password, cheks.MasterKey);
                 return RedirectToAction("Submit", cheks);
                 }
-            return View(cheks);
+                */
+            //return View(cheks);
         }
           
     

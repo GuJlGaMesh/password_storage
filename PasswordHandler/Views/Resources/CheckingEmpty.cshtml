@@ -1,0 +1,53 @@
+﻿@model PasswordHandler.Models.Store
+
+@{
+    ViewData["Title"] = "Create";
+}
+    <style>
+        li {
+            list-style-type: none; /* Убираем маркеры */
+        }
+
+        ul {
+            padding-left: 0; /* Сдвигаем список влево */
+        }
+    </style>
+
+
+<h1>Choose checking options</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-auto">
+        <form asp-action="Checking">
+            <div class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CheckingPassword" class="control-label"></label>
+                <input asp-for="CheckingPassword" class="form-control" type="checkbox" checked />
+                <span asp-validation-for="CheckingPassword" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <ul>
+                    @for (var i = 0; i < Model.Rules.Count; i++)
+                    {
+                        var rule = Model.Rules[i];
+                    <li>
+                        <label>@rule.Name</label>
+                        <input asp-for="Rules[i].Name" type="hidden" value="@rule.Name" />
+                        <input asp-for="Rules[i].Enabled" type="checkbox" checked class="form-control" />
+                    </li>
+                    }
+                </ul>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Accept" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

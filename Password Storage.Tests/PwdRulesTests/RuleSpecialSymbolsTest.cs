@@ -12,7 +12,7 @@ namespace Password_Storage.Tests
         public void RuleFullSSTest(string password)
         {
             double expected = 1.0;
-            var r = new RuleSpecialSymbols();
+            var r = new RuleSpecial();
             double actual = r.Check(password);
             Assert.Equal(expected, actual);
         }
@@ -21,7 +21,7 @@ namespace Password_Storage.Tests
         public void RuleHalfSSTest(string password)
         {
             double expected = 0.5;
-            var r = new RuleSpecialSymbols();
+            var r = new RuleSpecial();
             double actual = r.Check(password);
             Assert.Equal(expected, actual);
         }

@@ -4,15 +4,15 @@ using System.Text;
 
 namespace Password_Storage
 {
-    public class Length : LowerChar
+    public class LengthChar : LowerChar
     {
         private readonly int _minLength;
 
-        public Length(int minLegnth = 8)
+        public LengthChar(int minLegnth = 16)
         {
             if (minLegnth > 0)
                 _minLength = minLegnth;
-            else _minLength = 8;
+            else _minLength = 16;
         }
 
         public override int MinLength => _minLength;

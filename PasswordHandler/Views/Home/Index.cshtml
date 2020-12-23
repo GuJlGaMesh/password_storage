@@ -3,6 +3,12 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4"> Index</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    
+    <h1 class="display-4"> Welcome!</h1>
+    <p>This is a service that <a asp-controller="Resources" asp-action="Help">help</a> you store, access, crypt and estimate your passwords.</p>
+    <form >
+        <div class="form-group">
+            <input  type="submit" asp-controller="Resources" asp-action="Index" value="Let`s start!" class="btn btn-primary" />
+        </div>
+    </form>
 </div>
